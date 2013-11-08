@@ -3,9 +3,9 @@ xhr.js
 
 Simple library to make XHR.
 
-It's a lightweight:
-* minified ~0.7K
-* gzipped ~0.2K
+It's lightweight:
+* minified ~0.5K
+* gzipped ~0.3K
 
 It can:
 * send HTTP requests and execute a callback function with a context specified in params

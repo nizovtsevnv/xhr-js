@@ -10,7 +10,7 @@ var Xhr = function(context){
   }
   
   THIS.method = function(value){
-    method = value
+    method = value.toUpperCase()
     return THIS
   }
   
@@ -24,9 +24,16 @@ var Xhr = function(context){
         xhr.context = context
         fn(xhr)
       }
-    } 
-    xhr.open(method, url + (/[?]/.test(url) ? '&' : '?') + query, true)
-    xhr.send()
+    }
+    if(method == 'GET'){
+      xhr.open(method, url + (/[?]/.test(url) ? '&' : '?') + query, true)
+      xhr.send()
+    }else{
+      xhr.open(method, url, true)
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhr.send(query)
+    }
+
     return xhr
   }
 
