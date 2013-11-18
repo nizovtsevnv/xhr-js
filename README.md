@@ -4,8 +4,8 @@ xhr.js
 Simple library to make XHR.
 
 It's lightweight:
-* minified ~0.5K
-* gzipped ~0.3K
+* minified ~0.8K
+* gzipped ~0.4K
 
 It can:
 * send HTTP requests and execute a callback function with a context specified in params
@@ -23,6 +23,9 @@ Chainable methods:
 
 Send method:
 * send([data_object])
+
+Encode data to URL encoded string:
+* encode(some_data)
 
 Samples
 -------

@@ -1,9 +1,27 @@
 var Xhr = function(context){
-  var THIS = this,
+  var OBJECT = 'object',
+      THIS = this,
+      UNDEFINED = 'undefined',
       fn, url,
       method = 'GET',
-      xhr = window.XMLHttpRequest	? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+      xhr = window.XMLHttpRequest	? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'),
+      
+      compareType = function(object, compare){
+        return compare ? compareType(object) == compare : typeof(object)
+      }
 
+  THIS.encode = function(value, prefix){
+    var i, result = []
+    if(compareType(value, OBJECT)){
+      for(i in value){
+        result.push(THIS.encode(value[i], compareType(prefix, UNDEFINED) ? encodeURIComponent(i) : prefix + '[' + encodeURIComponent(i) + ']'))
+        }
+    }else{
+      result.push((compareType(prefix, UNDEFINED) ? '' : prefix + '=') + encodeURIComponent(value))
+    }
+    return result.join('&')
+  }
+  
   THIS.fn = function(value){
     fn = value
     return THIS
@@ -16,9 +34,6 @@ var Xhr = function(context){
   
   THIS.send = function(data){
     var i, query = ''
-    for(i in data){
-      query += encodeURIComponent(i) + '=' + encodeURIComponent(data[i]) + '&';
-    }
     xhr.onload = function(){
       if(typeof(fn) == 'function'){
         xhr.context = context
@@ -26,12 +41,12 @@ var Xhr = function(context){
       }
     }
     if(method == 'GET'){
-      xhr.open(method, url + (/[?]/.test(url) ? '&' : '?') + query, true)
+      xhr.open(method, url + (/[?]/.test(url) ? '&' : '?') + encode(data), true)
       xhr.send()
     }else{
       xhr.open(method, url, true)
       xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xhr.send(query)
+      xhr.send(encode(data))
     }
 
     return xhr
